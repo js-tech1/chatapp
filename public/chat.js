@@ -63,7 +63,7 @@ socket.on("joined-user", (data) => {
 let params = new URLSearchParams(window.location.search);
 let usernamee = params.get('username');
 
-let messages = JSON.parse(localStorage.getItem('messages')) || [];
+let messages = JSON.parse(localStorage.getItem(`messages_${roomname}`)) || [];
 
 messages.forEach((data) => {
   let alignClass = data.username === usernamee ? 'right-align' : 'left-align';
@@ -74,7 +74,7 @@ messages.forEach((data) => {
 socket.on("chat", (data) => {
   data.message = data.message.replace(/\n/g, '<br>'); // Add this line
   messages.push(data);
-  localStorage.setItem('messages', JSON.stringify(messages));
+  localStorage.setItem(`messages_${roomname}`, JSON.stringify(messages));
   let params = new URLSearchParams(window.location.search);
   let username = params.get('username');
   const currentTime = new Date().toLocaleTimeString();
