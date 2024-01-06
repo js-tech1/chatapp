@@ -1,0 +1,11 @@
+
+Error: Required argument <file path> missing for command: 'run'
+
+Usage: testCase run <file path> [options]
+
+OPTIONS
+-o, --optionE                                                 
+-O, --optionF <option value>                                  
+-h, --help                      Display usage information     
+-V, --version                   Display current version       
+

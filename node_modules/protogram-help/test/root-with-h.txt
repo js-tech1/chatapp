@@ -1,0 +1,15 @@
+
+Protogram Help Example v0.0.3
+
+Usage: testCase [options]
+
+OPTIONS
+-o, --optionA <a value>             This is option A              
+-O, --optionB [a number]            This is option B              
+-p, --optionC [an optional string]  This is option C              
+-h, --help                          Display usage information     
+-V, --version                       Display current version       
+
+SUBCOMMANDS
+run <file path>                                               
+

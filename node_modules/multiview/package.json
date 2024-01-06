@@ -1,0 +1,54 @@
+{
+  "name": "multiview",
+  "version": "3.0.1",
+  "description": "Neatly view the output of multiple spawned processes.",
+  "main": "main.js",
+  "scripts": {
+    "test-eslint": "eslint ./ --ext js",
+    "test": "npm run test-eslint && nodeunit test/test.js && node cli [ls -la] [npm run lsla] -x 5000",
+    "lsla": "ls -la"
+  },
+  "bin": {
+    "multiview": "cli.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/arjunmehta/multiview.git"
+  },
+  "keywords": [
+    "bash",
+    "tty",
+    "multiple",
+    "multiview",
+    "tmux",
+    "multiplex",
+    "columns",
+    "stream",
+    "pipe",
+    "spawn",
+    "processes",
+    "stdout"
+  ],
+  "author": "Arjun Mehta",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/arjunmehta/multiview/issues"
+  },
+  "homepage": "https://github.com/arjunmehta/multiview",
+  "dependencies": {
+    "columns": "0.8.0",
+    "event-transmitter": "2.0.0",
+    "keypress": "0.2.1",
+    "protogram": "1.1.3",
+    "protogram-help": "1.0.2",
+    "tree-kill": "^1.2.2",
+    "unparse-args": "1.0.1"
+  },
+  "devDependencies": {
+    "eslint": "4.18.2",
+    "eslint-config-standard": "7.0.1",
+    "eslint-plugin-promise": "3.5.0",
+    "eslint-plugin-standard": "2.1.1",
+    "nodeunit": "0.11.3"
+  }
+}

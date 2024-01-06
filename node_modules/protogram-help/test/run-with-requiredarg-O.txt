@@ -1,0 +1,12 @@
+
+Error: Required argument <option value> missing for flag: '--optionF'
+
+Usage: testCase run <file path> [options]
+
+OPTIONS
+-o, --optionE                                                 
+-O, --optionF <option value>                                  
+-h, --help                      Display usage information     
+-V, --version                   Display current version       
+
+run executed [ 'ajh' ] { optionF: true }
