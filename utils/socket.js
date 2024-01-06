@@ -1,7 +1,31 @@
 const { getUsers, users } = require("./getUsers");
-
+const socketInfo = {};
 function socket(io) {
   io.on("connection", (socket) => {
+    // socket.on("joined-user", (data) => {
+    //   var user = {};
+    //   user[socket.id] = data.username;
+    //   const roomUsers = users[data.roomname] || [];
+    //   const existingUser = roomUsers.find((u) => Object.keys(u)[0] === socket.id);
+    //   if (existingUser) {
+    //     existingUser[socket.id] = data.username;
+    //   } else {
+    //     roomUsers.push(user);
+    //   }
+
+    //   users[data.roomname] = roomUsers;
+
+    //   socket.join(data.roomname);
+
+    //   io.to(data.roomname).emit("joined-user", { username: data.username });
+
+    //   io.to(data.roomname).emit("online-users", getUsers(users[data.roomname]));
+
+    //   // io.to(data.roomname).emit("disconnect-users", { username: data.username });
+      
+      
+
+    // });
     socket.on("joined-user", (data) => {
       var user = {};
       user[socket.id] = data.username;
@@ -17,14 +41,13 @@ function socket(io) {
 
       socket.join(data.roomname);
 
+      // Store socket information
+      socketInfo[socket.id] = {
+        roomname: data.roomname,
+      };
+
       io.to(data.roomname).emit("joined-user", { username: data.username });
-
       io.to(data.roomname).emit("online-users", getUsers(users[data.roomname]));
-
-      // io.to(data.roomname).emit("disconnect-users", { username: data.username });
-      
-      
-
     });
 
     socket.on("chat", (data) => {
@@ -64,21 +87,22 @@ function socket(io) {
     // }
     //   io.to(roomname).emit("online-users", getUsers(users[roomname]));
     // });
-    socket.on("disconnecting", (data) => {
-      var rooms = Object.keys(socket.rooms);
+    socket.on("disconnecting", () => {
       var socketId = socket.id;
-      var roomname = rooms.length > 1 ? rooms[1] : rooms[0];
-      console.log(data);
-      console.log(socketId);
-      console.log(roomname);
-    
-      if (users[roomname]) {
+      var roomname = socketInfo[socketId] ? socketInfo[socketId].roomname : undefined;
+
+      console.log("Socket ID:", socketId);
+      console.log("Roomname:", roomname);
+
+      if (roomname && users[roomname]) {
         users[roomname] = users[roomname].filter(user => Object.keys(user)[0] !== socketId);
+        io.to(roomname).emit("online-users", getUsers(users[roomname]));
       } else {
         console.log(`Room ${roomname} does not exist in users`);
       }
-    
-      io.to(roomname).emit("online-users", getUsers(users[roomname]));
+
+      // Remove socket information on disconnect
+      delete socketInfo[socketId];
     });
   });
 }

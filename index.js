@@ -21,7 +21,8 @@ require("./utils/socket")(io);
 app.post("/room", (req, res) => {
   roomname = req.body.roomname;
   username = req.body.username;
-  res.redirect(`/room?username=${username}&roomname=${roomname}`);
+  const uniqueIdentifier = Math.floor(Math.random() * 10000);
+  res.redirect(`/room?username=${username+uniqueIdentifier}&roomname=${roomname}`);
 });
 
 app.get("/room", (req, res) => {

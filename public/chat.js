@@ -22,8 +22,12 @@ roomMessage.innerHTML = `Connected in room ${roomname}`;
 socket.emit("joined-user", {
   username: username,
   roomname: roomname,
+  // currentSocketId: socket.id,
+  
 });
-
+setTimeout(function () {
+  localStorage.clear(); // Clears all items in local storage
+}, 15 * 60 * 1000); // 15 minutes in milliseconds
 send.addEventListener("click", () => {
   socket.emit("chat", {
     username: username,
@@ -73,9 +77,10 @@ socket.on("chat", (data) => {
   localStorage.setItem('messages', JSON.stringify(messages));
   let params = new URLSearchParams(window.location.search);
   let username = params.get('username');
+  const currentTime = new Date().toLocaleTimeString();
   let alignClass = data.username === username ? 'right-align' : 'left-align';
   output.innerHTML +=
-    `<p class="${alignClass}"><strong>${data.username}</strong>:<br> ${data.message}</p>`;
+    `<p class="${alignClass}"><strong>${data.username}</strong>:<br> ${data.message}<br><br>${currentTime}</p> `;
   // output.innerHTML +=
   //   "<p><strong>" + data.username + "</strong>:<br> " + data.message + "</p>";
   feedback.innerHTML = "";
@@ -98,9 +103,9 @@ socket.on("typing", (user) => {
 window.addEventListener('beforeunload', function ()  {
   socket.emit('online-users');
 });
-socket.on("online-users", (user) => {
+socket.on("online-users", (updatedUsers) => {
   users.innerHTML = "";
-  user.forEach((user) => {
+  updatedUsers.forEach((user) => {
     users.innerHTML += `<p>${user}</p>`;
   });
 });
@@ -109,15 +114,15 @@ socket.on("online-users", (user) => {
 //   let userElement = document.querySelector(`p:contains('${disconnectedUsers.username}')`);
 //   if (userElement) userElement.remove();
 // });
-socket.on("disconnect-users", (disconnectedUser) => {
-  console.log(disconnectedUser);
-  // Get all user elements
-  let userElements = Array.from(document.querySelectorAll('p'));
-  // Find the element that contains the disconnected user's name
-  let userElement = userElements.find(element => element.textContent === disconnectedUser.username);
-  // If the element exists, remove it
-  if (userElement) userElement.remove();
-});
+// socket.on("disconnecting", (disconnectedUser) => {
+//   console.log(disconnectedUser);
+//   // Get all user elements
+//   let userElements = Array.from(document.querySelectorAll('p'));
+//   // Find the element that contains the disconnected user's name
+//   let userElement = userElements.find(element => element.textContent === disconnectedUser.username);
+//   // If the element exists, remove it
+//   if (userElement) userElement.remove();
+// });
 // socket.on('disconnect', () => {
 //   delete users[socket.id];
 //   io.emit('joined-user', Object.values(users));
