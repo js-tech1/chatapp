@@ -59,6 +59,7 @@ socket.on("joined-user", (data) => {
   showJoinPopup(data.username);
 });
 
+const currentTime = new Date().toLocaleTimeString();
 
 let params = new URLSearchParams(window.location.search);
 let usernamee = params.get('username');
@@ -73,16 +74,22 @@ messages.forEach((data) => {
 
 socket.on("chat", (data) => {
   data.message = data.message.replace(/\n/g, '<br>'); // Add this line
-  messages.push(data);
-  localStorage.setItem(`messages_${roomname}`, JSON.stringify(messages));
+  // messages.push(data);
+  // localStorage.setItem(`messages_${roomname}`, JSON.stringify(messages));
+  const messageWithTime = `${data.message}<br><br>${currentTime}`;
   let params = new URLSearchParams(window.location.search);
   let username = params.get('username');
-  const currentTime = new Date().toLocaleTimeString();
   let alignClass = data.username === username ? 'right-align' : 'left-align';
   output.innerHTML +=
     `<p class="${alignClass}"><strong>${data.username}</strong>:<br> ${data.message}<br><br>${currentTime}</p> `;
   // output.innerHTML +=
   //   "<p><strong>" + data.username + "</strong>:<br> " + data.message + "</p>";
+  let messages = JSON.parse(localStorage.getItem(`messages_${roomname}`)) || [];
+  messages.push({
+    username: data.username,
+    message: messageWithTime,
+  });
+  localStorage.setItem(`messages_${roomname}`, JSON.stringify(messages));
   feedback.innerHTML = "";
   document.querySelector(".chat-message").scrollTop =
     document.querySelector(".chat-message").scrollHeight;
