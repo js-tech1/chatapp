@@ -91,8 +91,8 @@ function socket(io) {
       var socketId = socket.id;
       var roomname = socketInfo[socketId] ? socketInfo[socketId].roomname : undefined;
 
-      console.log("Socket ID:", socketId);
-      console.log("Roomname:", roomname);
+      // console.log("Socket ID:", socketId);
+      // console.log("Roomname:", roomname);
 
       if (roomname && users[roomname]) {
         users[roomname] = users[roomname].filter(user => Object.keys(user)[0] !== socketId);

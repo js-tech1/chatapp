@@ -10,12 +10,34 @@ const usersjoin = document.querySelector(".users-join");
 const url = new URL(window.location.href)
 const socket = io.connect(url.host);
 // console.log(url);
+fetch
 
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
-const username = urlParams.get("username");
-const roomname = urlParams.get("roomname");
-// console.log(username, roomname);
+const username = null;
+const roomname = null;
+fetch("/get-username-roomname")
+      .then(response => response.json())
+      .then(data => {
+        const { username, roomname } = data;
+        // Pass these values to your chat.js logic
+        initializeChat(username, roomname); // This is a hypothetical function in chat.js
+      })
+      .catch(error => console.error("Error fetching username and roomname:", error));
+      // In your chat.js file
+class Chat {
+  constructor(username, roomname) {
+    this.username = username;
+    this.roomname = roomname;
+  }
+
+  initializeChat() {
+    // Your chat.js logic here, using the provided username and roomname
+  }
+}
+
+const chat = new Chat(username, roomname);
+chat.initializeChat();
 
 roomMessage.innerHTML = `Connected in room ${roomname}`;
 
